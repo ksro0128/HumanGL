@@ -17,7 +17,8 @@ add_executable(${PROJECT_NAME}
     src/buffer.cpp src/buffer.h
     src/vertex_layout.cpp src/vertex_layout.h
     src/mesh.cpp src/mesh.h
-    src/sglm.cpp src/sglm.h)
+    src/sglm.cpp src/sglm.h
+    src/Human.cpp src/Human.h)
 
 include(Dependency.cmake)
 

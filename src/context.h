@@ -7,6 +7,7 @@
 #include "buffer.h"
 #include "vertex_layout.h"
 #include "mesh.h"
+#include "Human.h"
 
 CLASS_PTR(Context)
 class Context {
@@ -24,6 +25,8 @@ private:
     ProgramUPtr m_program;
     ProgramUPtr m_simpleProgram;
     MeshUPtr m_box;
+    HumanUPtr m_human;
+
 
     // animation
     bool m_animation { true };

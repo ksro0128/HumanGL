@@ -76,6 +76,8 @@ bool Context::Init() {
     if (!m_program)
         return false;
 
+    m_human = Human::Create();
+
     glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
     return true;
 }
@@ -91,22 +93,28 @@ void Context::Render() {
 
     m_cameraFront = sglm::vec3(tmp.x, tmp.y, tmp.z);
 
-    auto projection = sglm::perspective(sglm::radians(45.0f),
-        (float)m_width / (float)m_height, 0.01f, 30.0f);
+    auto projection = sglm::perspective(sglm::radians(45.0f), (float)m_width / (float)m_height, 0.01f, 100.0f);
     auto view = sglm::lookAt(
         m_cameraPos,
         m_cameraPos + m_cameraFront,
         m_cameraUp);
-    sglm::mat4 proj = sglm::perspective(sglm::radians(45.0f), (float)m_width / (float)m_height, 0.1f, 100.0f);
-    sglm::mat4 model = sglm::mat4(1.0f);
+    sglm::mat4 translateModel = sglm::mat4(1.0f);
+    sglm::mat4 rotateModel = sglm::mat4(1.0f);
+    static float angle = 0.0f;
+    angle += 1.0f;
+    if (angle >= 360.0f)
+        angle = 0.0f;
+    rotateModel = sglm::rotate(rotateModel, sglm::radians(angle), sglm::vec3(0.0f, 1.0f, 0.0f));
+    sglm::mat4 scaleModel = sglm::mat4(1.0f);
+    static float scale = 1.0f;
+    static float dir = 0.01f;
+    scale += dir;
+    if (scale >= 2.0f)
+        dir = -0.01f;
+    if (scale <= 0.5f)
+        dir = 0.01f;
+    scaleModel = sglm::scale(scaleModel, sglm::vec3(scale, scale, scale));
+    auto transform = projection * view * translateModel * rotateModel * scaleModel;
 
-    model = sglm::scale(model, sglm::vec3(1.0f, 1.2f, 0.5f));
-
-    sglm::mat4 transform = proj * view * model;
-
-    m_program->Use();
-    m_program->SetUniform("transform", transform);
-    m_program->SetUniform("objectColor", sglm::vec4(1.0f, 0.1f, 0.1f, 1.0f));
-
-    m_box->Draw(m_program.get());
+    m_human->Draw(m_box.get(), m_program.get(), transform);
 }
