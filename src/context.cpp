@@ -29,6 +29,24 @@ void Context::ProcessInput(GLFWwindow* window) {
         m_cameraPos += cameraSpeed * cameraUp;
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
         m_cameraPos -= cameraSpeed * cameraUp;
+
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+        m_human->SetState(1);
+    }
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+        m_human->SetState(2);
+    }
+    if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS) {
+        m_human->SetState(3);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        m_animation = !m_animation;
+    }
+    
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+        m_human->Initialize();
+    }
 }
 
 void Context::Reshape(int width, int height) {
@@ -43,7 +61,7 @@ void Context::MouseMove(double x, double y) {
     auto pos = sglm::vec2((float)x, (float)y);
     auto deltaPos = pos - m_prevMousePos;
 
-    const float cameraRotSpeed = 0.4f;
+    const float cameraRotSpeed = 0.1f;
     m_cameraYaw -= deltaPos.x * cameraRotSpeed;
     m_cameraPitch -= deltaPos.y * cameraRotSpeed;
 
@@ -77,6 +95,7 @@ bool Context::Init() {
         return false;
 
     m_human = Human::Create();
+    m_human->SetState(1);
 
     glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
     return true;
@@ -85,6 +104,80 @@ bool Context::Init() {
 void Context::Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+
+    // //imgui
+    if (ImGui::Begin("Human Control")) {
+        ImGui::Text("Body");
+        ImGui::SliderFloat3("Body Scale", &m_human->m_body.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Body Size", &m_human->m_body.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Body Color", &m_human->m_body.color[0]);
+
+        ImGui::Text("Head");
+        ImGui::SliderFloat3("Translate Head", &m_human->m_head.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Head", &m_human->m_head.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Head", &m_human->m_head.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Head", &m_human->m_head.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Head", &m_human->m_head.color[0]);
+
+        ImGui::Text("Left Upper Arm");
+        ImGui::SliderFloat3("Translate Left Upper Arm", &m_human->m_leftUpperArm.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Left Upper Arm", &m_human->m_leftUpperArm.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Left Upper Arm", &m_human->m_leftUpperArm.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Left Upper Arm", &m_human->m_leftUpperArm.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Left Upper Arm", &m_human->m_leftUpperArm.color[0]);
+
+        ImGui::Text("Right Upper Arm");
+        ImGui::SliderFloat3("Translate Right Upper Arm", &m_human->m_rightUpperArm.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Right Upper Arm", &m_human->m_rightUpperArm.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Right Upper Arm", &m_human->m_rightUpperArm.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Right Upper Arm", &m_human->m_rightUpperArm.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Right Upper Arm", &m_human->m_rightUpperArm.color[0]);
+
+        ImGui::Text("Left Lower Arm");
+        ImGui::SliderFloat3("Translate Left Lower Arm", &m_human->m_leftLowerArm.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Left Lower Arm", &m_human->m_leftLowerArm.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Left Lower Arm", &m_human->m_leftLowerArm.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Left Lower Arm", &m_human->m_leftLowerArm.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Left Lower Arm", &m_human->m_leftLowerArm.color[0]);
+
+        ImGui::Text("Right Lower Arm");
+        ImGui::SliderFloat3("Translate Right Lower Arm", &m_human->m_rightLowerArm.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Right Lower Arm", &m_human->m_rightLowerArm.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Right Lower Arm", &m_human->m_rightLowerArm.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Right Lower Arm", &m_human->m_rightLowerArm.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Right Lower Arm", &m_human->m_rightLowerArm.color[0]);
+
+        ImGui::Text("Left Upper Leg");
+        ImGui::SliderFloat3("Translate Left Upper Leg", &m_human->m_leftUpperLeg.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Left Upper Leg", &m_human->m_leftUpperLeg.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Left Upper Leg", &m_human->m_leftUpperLeg.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Left Upper Leg", &m_human->m_leftUpperLeg.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Left Upper Leg", &m_human->m_leftUpperLeg.color[0]);
+
+        ImGui::Text("Right Upper Leg");
+        ImGui::SliderFloat3("Translate Right Upper Leg", &m_human->m_rightUpperLeg.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Right Upper Leg", &m_human->m_rightUpperLeg.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Right Upper Leg", &m_human->m_rightUpperLeg.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Right Upper Leg", &m_human->m_rightUpperLeg.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Right Upper Leg", &m_human->m_rightUpperLeg.color[0]);
+
+        ImGui::Text("Left Lower Leg");
+        ImGui::SliderFloat3("Translate Left Lower Leg", &m_human->m_leftLowerLeg.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Left Lower Leg", &m_human->m_leftLowerLeg.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Left Lower Leg", &m_human->m_leftLowerLeg.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Left Lower Leg", &m_human->m_leftLowerLeg.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Left Lower Leg", &m_human->m_leftLowerLeg.color[0]);
+
+        ImGui::Text("Right Lower Leg");
+        ImGui::SliderFloat3("Translate Right Lower Leg", &m_human->m_rightLowerLeg.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Right Lower Leg", &m_human->m_rightLowerLeg.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Right Lower Leg", &m_human->m_rightLowerLeg.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Right Lower Leg", &m_human->m_rightLowerLeg.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Right Lower Leg", &m_human->m_rightLowerLeg.color[0]);
+
+    }
+    ImGui::End();
+
 
     sglm::vec4 tmp =
         sglm::rotate(sglm::mat4(1.0f), sglm::radians(m_cameraYaw), sglm::vec3(0.0f, 1.0f, 0.0f)) *
@@ -98,23 +191,15 @@ void Context::Render() {
         m_cameraPos,
         m_cameraPos + m_cameraFront,
         m_cameraUp);
-    sglm::mat4 translateModel = sglm::mat4(1.0f);
+    sglm::mat4 translateModel = sglm::translate(sglm::mat4(1.0f), m_modelTranslate);
     sglm::mat4 rotateModel = sglm::mat4(1.0f);
-    static float angle = 0.0f;
-    angle += 1.0f;
-    if (angle >= 360.0f)
-        angle = 0.0f;
-    rotateModel = sglm::rotate(rotateModel, sglm::radians(angle), sglm::vec3(0.0f, 1.0f, 0.0f));
-    sglm::mat4 scaleModel = sglm::mat4(1.0f);
-    static float scale = 1.0f;
-    static float dir = 0.01f;
-    scale += dir;
-    if (scale >= 2.0f)
-        dir = -0.01f;
-    if (scale <= 0.5f)
-        dir = 0.01f;
-    scaleModel = sglm::scale(scaleModel, sglm::vec3(scale, scale, scale));
+    rotateModel = sglm::rotate(rotateModel, sglm::radians(m_modelRotate.x), sglm::vec3(1.0f, 0.0f, 0.0f));
+    rotateModel = sglm::rotate(rotateModel, sglm::radians(m_modelRotate.y), sglm::vec3(0.0f, 1.0f, 0.0f));
+    rotateModel = sglm::rotate(rotateModel, sglm::radians(m_modelRotate.z), sglm::vec3(0.0f, 0.0f, 1.0f));
+    sglm::mat4 scaleModel = sglm::scale(sglm::mat4(1.0f), m_modelScale);
     auto transform = projection * view * translateModel * rotateModel * scaleModel;
 
+    if (m_animation)
+        m_human->Update();
     m_human->Draw(m_box.get(), m_program.get(), transform);
 }

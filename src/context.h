@@ -58,6 +58,12 @@ private:
     sglm::vec3 m_cameraUp { sglm::vec3(0.0f, 1.0f, 0.0f) };
     int m_width {WINDOW_WIDTH};
     int m_height {WINDOW_HEIGHT};
+
+    // model transform
+    sglm::vec3 m_modelTranslate { sglm::vec3(0.0f) };
+    sglm::vec3 m_modelRotate { sglm::vec3(0.0f, 180.0f, 0.0f) };
+    sglm::vec3 m_modelScale { sglm::vec3(1.0f) };
+
 };
 
 #endif // __CONTEXT_H__

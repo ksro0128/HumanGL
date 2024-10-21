@@ -5,6 +5,7 @@
 #include "mesh.h"
 
 struct Part {
+    std::string name;
     sglm::vec3 translate;
     sglm::vec3 rotate;
     sglm::vec3 scale;
@@ -30,8 +31,10 @@ CLASS_PTR(Human)
 class Human {
 public:
     static HumanUPtr Create();
-    void Draw(const Mesh* mesh, const Program* program, const sglm::mat4& transform) const;
-private:
+    void Draw(const Mesh* mesh, const Program* program, const sglm::mat4& transform);
+    void SetState(int state);
+    void Update();
+    void Initialize();
     Part m_body;
     Part m_head;
     Part m_leftUpperArm;
@@ -42,11 +45,20 @@ private:
     Part m_rightLowerArm;
     Part m_leftLowerLeg;
     Part m_rightLowerLeg;
+private:
     Node m_root;
+
+    int32_t m_state = 0; // 1 : idle, 2 : walk, 3 : jump
+    int32_t m_idleTime = 0;
+    int32_t m_walkTime = 0;
+    int32_t m_jumpTime = 0;
 
     Human() {}
     void Init();
-    void DrawNode(const Node& node, const Mesh* mesh, const Program* program, const sglm::mat4& transform) const;
+    void DrawNode(const Node& node, const Mesh* mesh, const Program* program, const sglm::mat4& transform);
+    void Idle();
+    void Walk();
+    void Jump();
 };
 
 

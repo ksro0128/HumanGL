@@ -90,6 +90,9 @@ int main() {
     ImGui_ImplOpenGL3_Init();
     ImGui_ImplOpenGL3_CreateFontsTexture();
     ImGui_ImplOpenGL3_CreateDeviceObjects();
+    //ImGui 텍스트 폰트 크기 조절
+    ImGui::GetIO().FontGlobalScale = 3.0f;
+    ImGui::GetStyle().ScaleAllSizes(3.0f);
 
     auto context = Context::Create();
     if (!context) {
