@@ -107,6 +107,11 @@ void Context::Render() {
 
     // //imgui
     if (ImGui::Begin("Human Control")) {
+        ImGui::Text("Animation");
+        ImGui::Checkbox("Animation", &m_animation);
+        if (ImGui::Button("Reset")) {
+            m_human->Initialize();
+        }
         ImGui::Text("Body");
         ImGui::SliderFloat3("Body Scale", &m_human->m_body.scale[0], 0.1f, 2.0f);
         ImGui::SliderFloat3("Body Size", &m_human->m_body.size[0], 0.1f, 2.0f);
@@ -126,19 +131,19 @@ void Context::Render() {
         ImGui::SliderFloat3("Size Left Upper Arm", &m_human->m_leftUpperArm.size[0], 0.1f, 2.0f);
         ImGui::ColorEdit3("Color Left Upper Arm", &m_human->m_leftUpperArm.color[0]);
 
-        ImGui::Text("Right Upper Arm");
-        ImGui::SliderFloat3("Translate Right Upper Arm", &m_human->m_rightUpperArm.translate[0], -5.0f, 5.0f);
-        ImGui::SliderFloat3("Rotate Right Upper Arm", &m_human->m_rightUpperArm.rotate[0], -180.0f, 180.0f);
-        ImGui::SliderFloat3("Scale Right Upper Arm", &m_human->m_rightUpperArm.scale[0], 0.1f, 2.0f);
-        ImGui::SliderFloat3("Size Right Upper Arm", &m_human->m_rightUpperArm.size[0], 0.1f, 2.0f);
-        ImGui::ColorEdit3("Color Right Upper Arm", &m_human->m_rightUpperArm.color[0]);
-
         ImGui::Text("Left Lower Arm");
         ImGui::SliderFloat3("Translate Left Lower Arm", &m_human->m_leftLowerArm.translate[0], -5.0f, 5.0f);
         ImGui::SliderFloat3("Rotate Left Lower Arm", &m_human->m_leftLowerArm.rotate[0], -180.0f, 180.0f);
         ImGui::SliderFloat3("Scale Left Lower Arm", &m_human->m_leftLowerArm.scale[0], 0.1f, 2.0f);
         ImGui::SliderFloat3("Size Left Lower Arm", &m_human->m_leftLowerArm.size[0], 0.1f, 2.0f);
         ImGui::ColorEdit3("Color Left Lower Arm", &m_human->m_leftLowerArm.color[0]);
+
+        ImGui::Text("Right Upper Arm");
+        ImGui::SliderFloat3("Translate Right Upper Arm", &m_human->m_rightUpperArm.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Right Upper Arm", &m_human->m_rightUpperArm.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Right Upper Arm", &m_human->m_rightUpperArm.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Right Upper Arm", &m_human->m_rightUpperArm.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Right Upper Arm", &m_human->m_rightUpperArm.color[0]);
 
         ImGui::Text("Right Lower Arm");
         ImGui::SliderFloat3("Translate Right Lower Arm", &m_human->m_rightLowerArm.translate[0], -5.0f, 5.0f);
@@ -154,13 +159,6 @@ void Context::Render() {
         ImGui::SliderFloat3("Size Left Upper Leg", &m_human->m_leftUpperLeg.size[0], 0.1f, 2.0f);
         ImGui::ColorEdit3("Color Left Upper Leg", &m_human->m_leftUpperLeg.color[0]);
 
-        ImGui::Text("Right Upper Leg");
-        ImGui::SliderFloat3("Translate Right Upper Leg", &m_human->m_rightUpperLeg.translate[0], -5.0f, 5.0f);
-        ImGui::SliderFloat3("Rotate Right Upper Leg", &m_human->m_rightUpperLeg.rotate[0], -180.0f, 180.0f);
-        ImGui::SliderFloat3("Scale Right Upper Leg", &m_human->m_rightUpperLeg.scale[0], 0.1f, 2.0f);
-        ImGui::SliderFloat3("Size Right Upper Leg", &m_human->m_rightUpperLeg.size[0], 0.1f, 2.0f);
-        ImGui::ColorEdit3("Color Right Upper Leg", &m_human->m_rightUpperLeg.color[0]);
-
         ImGui::Text("Left Lower Leg");
         ImGui::SliderFloat3("Translate Left Lower Leg", &m_human->m_leftLowerLeg.translate[0], -5.0f, 5.0f);
         ImGui::SliderFloat3("Rotate Left Lower Leg", &m_human->m_leftLowerLeg.rotate[0], -180.0f, 180.0f);
@@ -168,13 +166,19 @@ void Context::Render() {
         ImGui::SliderFloat3("Size Left Lower Leg", &m_human->m_leftLowerLeg.size[0], 0.1f, 2.0f);
         ImGui::ColorEdit3("Color Left Lower Leg", &m_human->m_leftLowerLeg.color[0]);
 
+        ImGui::Text("Right Upper Leg");
+        ImGui::SliderFloat3("Translate Right Upper Leg", &m_human->m_rightUpperLeg.translate[0], -5.0f, 5.0f);
+        ImGui::SliderFloat3("Rotate Right Upper Leg", &m_human->m_rightUpperLeg.rotate[0], -180.0f, 180.0f);
+        ImGui::SliderFloat3("Scale Right Upper Leg", &m_human->m_rightUpperLeg.scale[0], 0.1f, 2.0f);
+        ImGui::SliderFloat3("Size Right Upper Leg", &m_human->m_rightUpperLeg.size[0], 0.1f, 2.0f);
+        ImGui::ColorEdit3("Color Right Upper Leg", &m_human->m_rightUpperLeg.color[0]);
+
         ImGui::Text("Right Lower Leg");
         ImGui::SliderFloat3("Translate Right Lower Leg", &m_human->m_rightLowerLeg.translate[0], -5.0f, 5.0f);
         ImGui::SliderFloat3("Rotate Right Lower Leg", &m_human->m_rightLowerLeg.rotate[0], -180.0f, 180.0f);
         ImGui::SliderFloat3("Scale Right Lower Leg", &m_human->m_rightLowerLeg.scale[0], 0.1f, 2.0f);
         ImGui::SliderFloat3("Size Right Lower Leg", &m_human->m_rightLowerLeg.size[0], 0.1f, 2.0f);
         ImGui::ColorEdit3("Color Right Lower Leg", &m_human->m_rightLowerLeg.color[0]);
-
     }
     ImGui::End();
 

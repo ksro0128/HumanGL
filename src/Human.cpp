@@ -105,18 +105,18 @@ void Human::Idle() {
         m_idleTime = 0;
     }
     float headAngle = 5.0f * sin(sglm::radians(m_idleTime * 1.8f));
-    m_head.rotate = sglm::vec3(headAngle - 1.0f, 0.0f, 0.0f);
+    m_head.rotate = sglm::vec3(headAngle - 1.0f, m_head.rotate.y, m_head.rotate.z);
     if (m_idleTime < 50) {
-        m_head.translate = sglm::vec3(0.0f, 0.75f + m_idleTime * 0.0006, 0.0f);
-        m_body.size = sglm::vec3((1.0f + m_idleTime * 0.001), (1.0f + m_idleTime * 0.001), 0.3f);
-        m_leftUpperArm.translate = sglm::vec3(-0.65f - m_idleTime * 0.0006, 0.15f + m_idleTime * 0.0001, 0.0f);
-        m_rightUpperArm.translate = sglm::vec3(0.65f + m_idleTime * 0.0006, 0.15f + m_idleTime * 0.0001, 0.0f);
+        m_head.translate = sglm::vec3(m_head.translate.x, 0.75f + m_idleTime * 0.0006, m_head.translate.z);
+        m_body.size = sglm::vec3((1.0f + m_idleTime * 0.001), (1.0f + m_idleTime * 0.001), m_body.size.z);
+        m_leftUpperArm.translate = sglm::vec3(-0.65f - m_idleTime * 0.0006, 0.15f + m_idleTime * 0.0001, m_leftUpperArm.translate.z);
+        m_rightUpperArm.translate = sglm::vec3(0.65f + m_idleTime * 0.0006, 0.15f + m_idleTime * 0.0001, m_rightUpperArm.translate.z);
     }
     else {
-        m_head.translate = sglm::vec3(0.0f, 0.75f + (100 - m_idleTime) * 0.0006, 0.0f);
-        m_body.size = sglm::vec3((1.0f + (100 - m_idleTime) * 0.001), (1.0f + (100 - m_idleTime) * 0.001), 0.3f);
-        m_leftUpperArm.translate = sglm::vec3(-0.65f - (100 - m_idleTime) * 0.0006, 0.15f + (100 - m_idleTime) * 0.0001, 0.0f);
-        m_rightUpperArm.translate = sglm::vec3(0.65f + (100 - m_idleTime) * 0.0006, 0.15f + (100 - m_idleTime) * 0.0001, 0.0f);
+        m_head.translate = sglm::vec3(m_head.translate.x, 0.75f + (100 - m_idleTime) * 0.0006, m_head.translate.z);
+        m_body.size = sglm::vec3((1.0f + (100 - m_idleTime) * 0.001), (1.0f + (100 - m_idleTime) * 0.001), m_body.size.z);
+        m_leftUpperArm.translate = sglm::vec3(-0.65f - (100 - m_idleTime) * 0.0006, 0.15f + (100 - m_idleTime) * 0.0001, m_leftUpperArm.translate.z);
+        m_rightUpperArm.translate = sglm::vec3(0.65f + (100 - m_idleTime) * 0.0006, 0.15f + (100 - m_idleTime) * 0.0001, m_rightUpperArm.translate.z);
     }
 }
 
@@ -135,21 +135,21 @@ void Human::Walk() {
     float bodyTranslate = sin(sglm::radians(m_walkTime * 3.6f)) * 0.05f;
     m_body.translate = sglm::vec3(m_body.translate.x, 0 + bodyTranslate, m_body.translate.z);
     float armAngle = 30.0f * sin(sglm::radians(m_walkTime * 1.8f));
-    m_leftUpperArm.rotate = sglm::vec3(-armAngle, 0.0f, 0.0f);
-    m_rightUpperArm.rotate = sglm::vec3(armAngle, 0.0f, 0.0f);
+    m_leftUpperArm.rotate = sglm::vec3(-armAngle, m_leftUpperArm.rotate.y, m_leftUpperArm.rotate.z);
+    m_rightUpperArm.rotate = sglm::vec3(armAngle, m_rightUpperArm.rotate.y, m_rightUpperArm.rotate.z);
 
     if (m_walkTime < 100) {
-        m_leftUpperLeg.rotate = sglm::vec3(frontLegAngle, 0.0f, 0.0f);
-        m_rightUpperLeg.rotate = sglm::vec3(-backLegAngle, 0.0f, 0.0f);
+        m_leftUpperLeg.rotate = sglm::vec3(frontLegAngle, m_leftUpperLeg.rotate.y, m_leftUpperLeg.rotate.z);
+        m_rightUpperLeg.rotate = sglm::vec3(-backLegAngle, m_rightUpperLeg.rotate.y, m_rightUpperLeg.rotate.z);
         lowerLegAngle = -15.0f * sin(sglm::radians(m_walkTime * 1.8f));
     }
     else {
-        m_leftUpperLeg.rotate = sglm::vec3(backLegAngle, 0.0f, 0.0f); 
-        m_rightUpperLeg.rotate = sglm::vec3(-frontLegAngle, 0.0f, 0.0f); 
+        m_leftUpperLeg.rotate = sglm::vec3(backLegAngle, m_leftUpperLeg.rotate.y, m_leftUpperLeg.rotate.z); 
+        m_rightUpperLeg.rotate = sglm::vec3(-frontLegAngle, m_rightUpperLeg.rotate.y, m_rightUpperLeg.rotate.z); 
         lowerLegAngle = -15.0f * sin(sglm::radians((m_walkTime - 100) * 1.8f));
     }
-    m_leftLowerLeg.rotate = sglm::vec3(lowerLegAngle, 0.0f, 0.0f);
-    m_rightLowerLeg.rotate = sglm::vec3(lowerLegAngle, 0.0f, 0.0f);
+    m_leftLowerLeg.rotate = sglm::vec3(lowerLegAngle, m_leftLowerLeg.rotate.y, m_leftLowerLeg.rotate.z);
+    m_rightLowerLeg.rotate = sglm::vec3(lowerLegAngle, m_rightLowerLeg.rotate.y, m_rightLowerLeg.rotate.z);
 }
 
 void Human::Jump() {
@@ -163,6 +163,7 @@ void Human::Jump() {
     if (m_jumpTime > 400) {
         m_jumpTime = 0;
         m_state = 1;
+        return ;
     }
 
     float velocity = 0.06f;
@@ -174,44 +175,46 @@ void Human::Jump() {
     if (m_jumpTime < 100) {
         m_body.translate = sglm::vec3(m_body.translate.x, 0.0f - sin(sglm::radians(m_jumpTime * 0.9f)) * 0.5f, m_body.translate.z);
         m_body.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 45.0f, m_body.rotate.y, m_body.rotate.z);
-        m_leftUpperArm.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 30.0f, 0.0f, 0.0f);
-        m_rightUpperArm.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 30.0f, 0.0f, 0.0f);
-        m_leftLowerArm.rotate = sglm::vec3(sin(sglm::radians(m_jumpTime * 0.9f)) * 20.0f, 0.0f, 0.0f);
-        m_rightLowerArm.rotate = sglm::vec3(sin(sglm::radians(m_jumpTime * 0.9f)) * 20.0f, 0.0f, 0.0f);
-        m_leftUpperLeg.rotate = sglm::vec3(sin(sglm::radians(m_jumpTime * 0.9f)) * 100.0f, 0.0f, 0.0f);
-        m_rightUpperLeg.rotate = sglm::vec3(sin(sglm::radians(m_jumpTime * 0.9f)) * 100.0f, 0.0f, 0.0f);
-        m_leftLowerLeg.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 90.0f, 0.0f, 0.0f);
-        m_rightLowerLeg.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 90.0f, 0.0f, 0.0f);
+        m_leftUpperArm.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 30.0f, m_leftUpperArm.rotate.y, m_leftUpperArm.rotate.z);
+        m_rightUpperArm.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 30.0f, m_rightUpperArm.rotate.y, m_rightUpperArm.rotate.z);
+        m_leftLowerArm.rotate = sglm::vec3(sin(sglm::radians(m_jumpTime * 0.9f)) * 20.0f, m_leftLowerArm.rotate.y, m_leftLowerArm.rotate.z);
+        m_rightLowerArm.rotate = sglm::vec3(sin(sglm::radians(m_jumpTime * 0.9f)) * 20.0f, m_rightLowerArm.rotate.y, m_rightLowerArm.rotate.z);
+        m_leftUpperLeg.rotate = sglm::vec3(sin(sglm::radians(m_jumpTime * 0.9f)) * 100.0f, m_leftUpperLeg.rotate.y, m_leftUpperLeg.rotate.z);
+        m_rightUpperLeg.rotate = sglm::vec3(sin(sglm::radians(m_jumpTime * 0.9f)) * 100.0f, m_rightUpperLeg.rotate.y, m_rightUpperLeg.rotate.z);
+        m_leftLowerLeg.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 90.0f, m_leftLowerLeg.rotate.y, m_leftLowerLeg.rotate.z);
+        m_rightLowerLeg.rotate = sglm::vec3(- sin(sglm::radians(m_jumpTime * 0.9f)) * 90.0f, m_rightLowerLeg.rotate.y, m_rightLowerLeg.rotate.z);
     }
     else if (m_jumpTime < 200) {
         m_body.translate = sglm::vec3(m_body.translate.x, -0.5f + jumpHeight, m_body.translate.z);
         m_body.rotate = sglm::vec3(-45.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 45.0f, m_body.rotate.y, m_body.rotate.z);
-        m_leftUpperArm.rotate = sglm::vec3(-30.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 210.0f, 0.0f, 0.0f);
-        m_rightUpperArm.rotate = sglm::vec3(-30.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 210.0f, 0.0f, 0.0f);
-        m_leftUpperLeg.rotate = sglm::vec3(100.0f - sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 100.0f, 0.0f, 0.0f);
-        m_rightUpperLeg.rotate = sglm::vec3(100.0f - sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 100.0f, 0.0f, 0.0f);
-        m_leftLowerLeg.rotate = sglm::vec3(-90.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 90.0f, 0.0f, 0.0f);
-        m_rightLowerLeg.rotate = sglm::vec3(-90.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 90.0f, 0.0f, 0.0f);
+        m_leftUpperArm.rotate = sglm::vec3(-30.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 210.0f, m_leftUpperArm.rotate.y, m_leftUpperArm.rotate.z);
+        m_rightUpperArm.rotate = sglm::vec3(-30.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 210.0f, m_rightUpperArm.rotate.y, m_rightUpperArm.rotate.z);
+        m_leftUpperLeg.rotate = sglm::vec3(100.0f - sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 100.0f, m_leftUpperLeg.rotate.y, m_leftUpperLeg.rotate.z);
+        m_rightUpperLeg.rotate = sglm::vec3(100.0f - sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 100.0f, m_rightUpperLeg.rotate.y, m_rightUpperLeg.rotate.z);
+        m_leftLowerLeg.rotate = sglm::vec3(-90.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 90.0f, m_leftLowerLeg.rotate.y, m_leftLowerLeg.rotate.z);
+        m_rightLowerLeg.rotate = sglm::vec3(-90.0f + sin(sglm::radians((m_jumpTime - 100) * 0.9f)) * 90.0f, m_rightLowerLeg.rotate.y, m_rightLowerLeg.rotate.z);
     }
     else if (m_jumpTime < 300) {
         m_body.translate = sglm::vec3(m_body.translate.x, -0.5f + jumpHeight, m_body.translate.z);
         m_body.rotate = sglm::vec3(0.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 45.0f, m_body.rotate.y, m_body.rotate.z);
-        m_leftUpperArm.rotate = sglm::vec3(180.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 210.0f, 0.0f, 0.0f);
-        m_rightUpperArm.rotate = sglm::vec3(180.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 210.0f, 0.0f, 0.0f);
-        m_leftUpperLeg.rotate = sglm::vec3(0.0f + sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 100.0f, 0.0f, 0.0f);
-        m_rightUpperLeg.rotate = sglm::vec3(0.0f + sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 100.0f, 0.0f, 0.0f);
-        m_leftLowerLeg.rotate = sglm::vec3(0.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 90.0f, 0.0f, 0.0f);
-        m_rightLowerLeg.rotate = sglm::vec3(0.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 90.0f, 0.0f, 0.0f);
+        m_leftUpperArm.rotate = sglm::vec3(180.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 210.0f, m_leftUpperArm.rotate.y, m_leftUpperArm.rotate.z);
+        m_rightUpperArm.rotate = sglm::vec3(180.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 210.0f, m_rightUpperArm.rotate.y, m_rightUpperArm.rotate.z);
+        m_leftUpperLeg.rotate = sglm::vec3(0.0f + sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 100.0f, m_leftUpperLeg.rotate.y, m_leftUpperLeg.rotate.z);
+        m_rightUpperLeg.rotate = sglm::vec3(0.0f + sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 100.0f, m_rightUpperLeg.rotate.y, m_rightUpperLeg.rotate.z);
+        m_leftLowerLeg.rotate = sglm::vec3(0.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 90.0f, m_leftLowerLeg.rotate.y, m_leftLowerLeg.rotate.z);
+        m_rightLowerLeg.rotate = sglm::vec3(0.0f - sin(sglm::radians((m_jumpTime - 200) * 0.9f)) * 90.0f, m_rightLowerLeg.rotate.y, m_rightLowerLeg.rotate.z);
     }
     else {
         m_body.translate = sglm::vec3(m_body.translate.x, -0.5f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 0.5f, m_body.translate.z);
         m_body.rotate = sglm::vec3(-45.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 45.0f, m_body.rotate.y, m_body.rotate.z);
-        m_leftUpperArm.rotate = sglm::vec3(-30.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 30.0f, 0.0f, 0.0f);
-        m_rightUpperArm.rotate = sglm::vec3(-30.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 30.0f, 0.0f, 0.0f);
-        m_leftUpperLeg.rotate = sglm::vec3(100.0f - sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 100.0f, 0.0f, 0.0f);
-        m_rightUpperLeg.rotate = sglm::vec3(100.0f - sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 100.0f, 0.0f, 0.0f);
-        m_leftLowerLeg.rotate = sglm::vec3(-90.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 90.0f, 0.0f, 0.0f);
-        m_rightLowerLeg.rotate = sglm::vec3(-90.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 90.0f, 0.0f, 0.0f);
+        m_leftUpperArm.rotate = sglm::vec3(-30.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 30.0f, m_leftUpperArm.rotate.y, m_leftUpperArm.rotate.z);
+        m_rightUpperArm.rotate = sglm::vec3(-30.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 30.0f, m_rightUpperArm.rotate.y, m_rightUpperArm.rotate.z);
+        m_leftLowerArm.rotate = sglm::vec3(20 - sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 20.0f, m_leftLowerArm.rotate.y, m_leftLowerArm.rotate.z);
+        m_rightLowerArm.rotate = sglm::vec3(20 - sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 20.0f, m_rightLowerArm.rotate.y, m_rightLowerArm.rotate.z);
+        m_leftUpperLeg.rotate = sglm::vec3(100.0f - sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 100.0f, m_leftUpperLeg.rotate.y, m_leftUpperLeg.rotate.z);
+        m_rightUpperLeg.rotate = sglm::vec3(100.0f - sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 100.0f, m_rightUpperLeg.rotate.y, m_rightUpperLeg.rotate.z);
+        m_leftLowerLeg.rotate = sglm::vec3(-90.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 90.0f, m_leftLowerLeg.rotate.y, m_leftLowerLeg.rotate.z);
+        m_rightLowerLeg.rotate = sglm::vec3(-90.0f + sin(sglm::radians((m_jumpTime - 300) * 0.9f)) * 90.0f, m_rightLowerLeg.rotate.y, m_rightLowerLeg.rotate.z);
     }
 }
 
